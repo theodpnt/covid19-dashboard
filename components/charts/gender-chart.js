@@ -3,7 +3,7 @@ import {Doughnut} from 'react-chartjs-2'
 import colors from '../../styles/colors'
 import 'chartjs-plugin-labels' // eslint-disable-line import/no-unassigned-import
 
-const allData = [5245, 525]
+const allData = [5245, 525] //  Données de test
 
 const options = {
   plugins: {
