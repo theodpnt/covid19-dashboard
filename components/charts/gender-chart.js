@@ -4,6 +4,15 @@ import colors from '../../styles/colors'
 
 const allData = [5245, 525]
 
+const options = {
+  plugins: {
+    labels: {
+      fontColor: colors.white,
+      fontStyle: 'bold'
+    }
+  }
+}
+
 const data = {
   labels: [
     'Homme',
@@ -23,7 +32,7 @@ const data = {
 }
 
 const GenderChart = () => (
-  <Doughnut data={data} />
+  <Doughnut data={data} options={options} />
 )
 
 export default GenderChart
