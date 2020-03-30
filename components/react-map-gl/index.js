@@ -99,7 +99,7 @@ const Map = () => {
         <Source
           type='geojson'
           id='cas-confirmes'
-          attribution='Données Santé publique France et ARS'
+          attribution='Données Santé publique France'
           data={maps[selectedMapIdx].data}
         >
           {maps[selectedMapIdx].layers.map(layer => (
@@ -141,7 +141,7 @@ const Map = () => {
           position: absolute;
           display: flex;
           justify-content: space-between;
-          align-items: end;
+          align-items: start;
           width: 100%;
           padding: 0.5em;
         }
