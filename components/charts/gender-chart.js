@@ -28,9 +28,6 @@ const GenderChart = () => {
   const chartRef = useRef(null)
   const options = {
     responsive: true,
-    tooltip: {
-      enable: true
-    },
     events: false,
     animation: {
       duration: 500,
