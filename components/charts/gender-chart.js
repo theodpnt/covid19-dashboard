@@ -35,7 +35,6 @@ const GenderChart = () => {
       onComplete: animation => {
         const {ctx} = animation.chart
         const {data} = chartRef.current.props
-        console.log(ctx.font)
         ctx.font = Chart.helpers.fontString(15, 'bold', Chart.defaults.global.defaultFontFamily)
         ctx.textAlign = 'center'
         ctx.textBaseline = 'bottom'
