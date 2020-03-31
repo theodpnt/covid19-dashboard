@@ -1,5 +1,6 @@
 import React from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
+import colors from '../../styles/colors'
 
 const allData = [23, 54, 142, 234, 534] //  Données de test
 
@@ -8,11 +9,11 @@ const data = {
   datasets: [
     {
       label: 'Nombre cas confirmé',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
+      backgroundColor: colors.lighterBlue,
+      borderColor: colors.almostBlack,
       borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)',
+      hoverBackgroundColor: colors.blue,
+      hoverBorderColor: colors.blue,
       data: allData
     }
   ]
