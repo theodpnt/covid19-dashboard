@@ -1,30 +1,28 @@
 import React, {useRef} from 'react'
+import PropTypes from 'prop-types'
 import {Doughnut} from 'react-chartjs-2'
 import colors from '../../styles/colors'
 import Counter from '../counter'
 import Chart from 'chart.js'
 
-const allData = [5245, 525] //  Données de test
-
-const data = {
-  labels: [
-    'Homme',
-    'Femme'
-  ],
-  datasets: [{
-    data: allData,
-    backgroundColor: [
-      colors.blue,
-      colors.lightBlue
+const GenderChart = ({genderData, height}) => {
+  const chart = {
+    labels: [
+      'Homme',
+      'Femme'
     ],
-    hoverBackgroundColor: [
-      colors.blue,
-      colors.lightBlue
-    ]
-  }]
-}
-
-const GenderChart = () => {
+    datasets: [{
+      data: genderData,
+      backgroundColor: [
+        colors.blue,
+        colors.lightBlue
+      ],
+      hoverBackgroundColor: [
+        colors.blue,
+        colors.lightBlue
+      ]
+    }]
+  }
   const chartRef = useRef(null)
   const options = {
     responsive: true,
@@ -60,10 +58,10 @@ const GenderChart = () => {
 
   return (
     <div className='gender-container'>
-      <Doughnut ref={chartRef} data={data} options={options} height={150} />
+      <Doughnut ref={chartRef} data={chart} options={options} height={height} />
       <div className='gender-counter'>
-        <Counter value={data.datasets[0].data[0]} label={data.labels[0]} color='blue' />
-        <Counter value={data.datasets[0].data[1]} label={data.labels[1]} color='lightBlue' />
+        <Counter value={genderData[0]} label={chart.labels[0]} color='blue' />
+        <Counter value={genderData[1]} label={chart.labels[1]} color='lightBlue' />
       </div>
       <style jsx>{`
         .gender-counter {
@@ -74,6 +72,15 @@ const GenderChart = () => {
       `}</style>
     </div>
   )
+}
+
+GenderChart.defaultProps = {
+  height: null
+}
+
+GenderChart.propTypes = {
+  genderData: PropTypes.array.isRequired,
+  height: PropTypes.number
 }
 
 export default GenderChart
