@@ -60,7 +60,7 @@ const GenderChart = () => {
 
   return (
     <div className='gender-container'>
-      <Doughnut ref={chartRef} data={data} options={options} height={200} />
+      <Doughnut ref={chartRef} data={data} options={options} height={150} />
       <div className='gender-counter'>
         <Counter value={data.datasets[0].data[0]} label={data.labels[0]} color='blue' />
         <Counter value={data.datasets[0].data[1]} label={data.labels[1]} color='lightBlue' />
