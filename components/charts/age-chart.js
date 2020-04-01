@@ -1,26 +1,37 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {HorizontalBar} from 'react-chartjs-2'
 import colors from '../../styles/colors'
 
-const allData = [23, 54, 142, 234, 534] //  Données de test
+const AgeChart = ({ageData, ageLabels, height}) => {
+  const data = {
+    labels: ageLabels,
+    datasets: [
+      {
+        label: 'Nombre cas confirmé',
+        backgroundColor: colors.lighterBlue,
+        borderColor: colors.almostBlack,
+        borderWidth: 1,
+        hoverBackgroundColor: colors.blue,
+        hoverBorderColor: colors.blue,
+        data: ageData
+      }
+    ]
+  }
 
-const data = {
-  labels: ['< 15 ans', '15-44 ans', '45-64 ans', '64-74 ans', '> 75 ans'],
-  datasets: [
-    {
-      label: 'Nombre cas confirmé',
-      backgroundColor: colors.lighterBlue,
-      borderColor: colors.almostBlack,
-      borderWidth: 1,
-      hoverBackgroundColor: colors.blue,
-      hoverBorderColor: colors.blue,
-      data: allData
-    }
-  ]
+  return (
+    <HorizontalBar data={data} height={height} />
+  )
 }
 
-const AgeChart = () => (
-  <HorizontalBar data={data} height={150} />
-)
+AgeChart.defaultProps = {
+  height: null
+}
+
+AgeChart.propTypes = {
+  ageData: PropTypes.array.isRequired,
+  ageLabels: PropTypes.array.isRequired,
+  height: PropTypes.number
+}
 
 export default AgeChart
