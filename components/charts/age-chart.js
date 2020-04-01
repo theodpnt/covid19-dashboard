@@ -20,7 +20,7 @@ const data = {
 }
 
 const AgeChart = () => (
-  <HorizontalBar data={data} />
+  <HorizontalBar data={data} height={200} />
 )
 
 export default AgeChart
