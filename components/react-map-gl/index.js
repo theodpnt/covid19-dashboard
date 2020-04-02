@@ -1,8 +1,19 @@
 import React, {useState, useCallback, useContext} from 'react'
 import ReactMapGL, {Source, Layer, Popup} from 'react-map-gl'
 import {Maximize2} from 'react-feather'
+import {groupBy} from 'lodash'
+
+import centers from '../../centers.json'
 
 import {AppContext} from '../../pages'
+
+import {
+  casConfirmesLayer,
+  decesLayer,
+  guerisLayer,
+  hospitalisesLayer,
+  reanimationLayer
+} from './layers'
 
 import MapSelector from '../map-selector'
 
@@ -15,15 +26,46 @@ const settings = {
   maxZoom: 10
 }
 
-const Map = () => {
-  const [selectedMapIdx, setSelectedMapIdx] = useState(1)
+const interactiveLayerIds = [
+  casConfirmesLayer.id,
+  decesLayer.id,
+  guerisLayer.id,
+  hospitalisesLayer.id,
+  reanimationLayer.id
+]
 
+const reportToGeoJSON = (report, date) => {
+  const byCode = groupBy(report.history, 'code')
+  return {
+    type: 'FeatureCollection',
+    features: Object.keys(byCode).filter(code => Boolean(centers[code])).map(code => {
+      const selectedDateAvailable = byCode[code].find(r => r.date === date)
+      const properties = selectedDateAvailable ? selectedDateAvailable : {code}
+
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: centers[code]
+        },
+        properties: {
+          ...properties,
+          ...byCode[code].find(r => r.date === date),
+          history: byCode[code].filter(r => date >= r.date)
+        }
+      }
+    }).filter(i => Boolean(i))
+  }
+}
+
+const Map = () => {
   const {
+    date,
     selectedLocationReport,
     setSelectedLocation,
     isIframe,
     viewport,
-    maps,
+    mapReport,
     setViewport,
     isMobileDevice
   } = useContext(AppContext)
@@ -36,6 +78,10 @@ const Map = () => {
       setMap(ref.getMap())
     }
   }, [])
+
+  const getGeoJSONFromReport = useCallback(() => {
+    return reportToGeoJSON(mapReport, date)
+  }, [mapReport, date])
 
   const onHover = event => {
     event.stopPropagation()
@@ -72,7 +118,7 @@ const Map = () => {
     <div className='map-container'>
       <div className='controls'>
         <div className='control'>
-          <MapSelector mapIdx={selectedMapIdx} selectMap={setSelectedMapIdx} />
+          <MapSelector />
         </div>
 
         {isIframe && (
@@ -90,7 +136,7 @@ const Map = () => {
         height='100%'
         mapStyle='https://etalab-tiles.fr/styles/osm-bright/style.json'
         {...settings}
-        interactiveLayerIds={maps[selectedMapIdx].layers.map(layer => layer.id)}
+        interactiveLayerIds={interactiveLayerIds}
         onViewportChange={setViewport}
         onHover={isMobileDevice ? null : onHover}
         onClick={onClick}
@@ -100,11 +146,13 @@ const Map = () => {
           type='geojson'
           id='cas-confirmes'
           attribution='Données Santé publique France'
-          data={maps[selectedMapIdx].data}
+          data={getGeoJSONFromReport()}
         >
-          {maps[selectedMapIdx].layers.map(layer => (
-            <Layer key={layer.id} {...layer} />
-          ))}
+          <Layer {...casConfirmesLayer} />
+          <Layer {...hospitalisesLayer} />
+          <Layer {...guerisLayer} />
+          <Layer {...reanimationLayer} />
+          <Layer {...decesLayer} />
         </Source>
 
         {hovered && (
