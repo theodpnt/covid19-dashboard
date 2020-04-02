@@ -142,18 +142,20 @@ const Map = () => {
         onClick={onClick}
       >
 
-        <Source
-          type='geojson'
-          id='cas-confirmes'
-          attribution='Données Santé publique France'
-          data={getGeoJSONFromReport()}
-        >
-          <Layer {...casConfirmesLayer} />
-          <Layer {...hospitalisesLayer} />
-          <Layer {...guerisLayer} />
-          <Layer {...reanimationLayer} />
-          <Layer {...decesLayer} />
-        </Source>
+        {mapReport && (
+          <Source
+            type='geojson'
+            id='cas-confirmes'
+            attribution='Données Santé publique France'
+            data={getGeoJSONFromReport()}
+          >
+            <Layer {...casConfirmesLayer} />
+            <Layer {...hospitalisesLayer} />
+            <Layer {...guerisLayer} />
+            <Layer {...reanimationLayer} />
+            <Layer {...decesLayer} />
+          </Source>
+        )}
 
         {hovered && (
           <Popup

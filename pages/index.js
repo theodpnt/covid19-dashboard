@@ -30,39 +30,8 @@ const MainPage = ({data, dates, isGouv}) => {
   const [isTouchScreenDevice, setIsTouchScreenDevice] = useState(false)
 
   const [date, setDate] = useState(dates[dates.length - 1])
-
-  const [franceReport, setFranceReport] = useState({})
-  const [regionsReport, setRegionsReport] = useState({})
-  const [previousRegionsReport, setPreviousRegionsReport] = useState({})
-  const [departementsReport, setDepartementsReport] = useState({})
-  const [previousDepartementsReport, setPreviousDepartementsReport] = useState({})
-  const [previousFranceReport, setPreviousFranceReport] = useState({})
-  const [selectedLocation, setSelectedLocation] = useState(null)
-  const [selectedLocationReport, setSelectedLocationReport] = useState(null)
-  const [selectedPreviousLocationReport, setSelectedPreviousLocationReport] = useState(null)
-  const [mapReport, setMapReport] = useState({})
-
-  const [viewport, setViewport] = useState(defaultViewport)
-
-  const dateIdx = indexOf(dates, date)
-  const previousDate = dates[dateIdx - 1]
-
-  const previousReport = useCallback(() => {
-    const idx = indexOf(dates, date)
-    const previousIdx = idx - 1
-
-    if (previousIdx >= 0) {
-      setDate(dates[previousIdx])
-    }
-  }, [dates, date])
-
-  const nextReport = useCallback(() => {
-    const idx = indexOf(dates, date)
-    const nextIdx = idx + 1
-    if (nextIdx <= dates.length - 1) {
-      setDate(dates[nextIdx])
-    }
-  }, [dates, date])
+  const [previousDate, setPreviousDate] = useState(dates[dates.length - 2])
+  const [dateIdx, setDateIdx] = useState(indexOf(dates, date))
 
   const getReport = useCallback((date, code) => {
     const filteredReports = data.filter(item => item.code.includes(code))
@@ -72,48 +41,68 @@ const MainPage = ({data, dates, isGouv}) => {
     }
   }, [data])
 
+  const [franceReport, setFranceReport] = useState({})
+  const [previousFranceReport, setPreviousFranceReport] = useState({})
+  const [regionsReport, setRegionsReport] = useState(null)
+  const [departementsReport, setDepartementsReport] = useState(null)
+
+  const [selectedLocation, setSelectedLocation] = useState(null)
+  const [selectedLocationReport, setSelectedLocationReport] = useState(null)
+  const [selectedPreviousLocationReport, setSelectedPreviousLocationReport] = useState(null)
+  const [mapReport, setMapReport] = useState(null)
+
+  const [viewport, setViewport] = useState(defaultViewport)
+
+  const previousReport = useCallback(() => {
+    const previousIdx = dateIdx - 1
+
+    if (previousIdx >= 0) {
+      setDate(dates[previousIdx])
+    }
+  }, [dates, dateIdx])
+
+  const nextReport = useCallback(() => {
+    const nextIdx = dateIdx + 1
+    if (nextIdx <= dates.length - 1) {
+      setDate(dates[nextIdx])
+    }
+  }, [dates, dateIdx])
+
   const handleResize = () => {
     const mobileWidth = parseInt(theme.mobileDisplay.split('px')[0])
     setIsMobileDevice(window.innerWidth < mobileWidth)
   }
 
-  const getLocationReport = useCallback(code => {
-    let report
-
-    if (code.includes('REG')) {
-      report = regionsReport
-    } else if (code.includes('DEP')) {
-      report = departementsReport
-    }
-
-    const feature = report.features.find(f => f.properties.code === code)
-    return {...feature.properties}
-  }, [regionsReport, departementsReport])
-
-  const getPreviousLocationReport = useCallback(code => {
-    let report
-
-    if (code.includes('REG')) {
-      report = previousRegionsReport
-    } else if (code.includes('DEP')) {
-      report = previousDepartementsReport
-    }
-
-    const feature = report.features.find(f => f.properties.code === code)
-    return {...feature.properties}
-  }, [previousRegionsReport, previousDepartementsReport])
-
   useEffect(() => {
     if (selectedLocation) {
-      const locationReport = getLocationReport(selectedLocation)
-      const previousLocationReport = getPreviousLocationReport(selectedLocation)
+      const locationReport = getReport(date, selectedLocation)
+      const previousLocationReport = getReport(previousDate, selectedLocation)
       setSelectedLocationReport(locationReport)
       setSelectedPreviousLocationReport(previousLocationReport)
     } else {
       setSelectedLocationReport(null)
       setSelectedPreviousLocationReport(null)
     }
-  }, [selectedLocation, getLocationReport, getPreviousLocationReport])
+  }, [date, previousDate, getReport, selectedLocation])
+
+  useEffect(() => {
+    if (!mapReport && regionsReport) {
+      setMapReport(regionsReport)
+    }
+  }, [mapReport, regionsReport])
+
+  useEffect(() => {
+    const dateIdx = indexOf(dates, date)
+    setDateIdx(dateIdx)
+
+    const previousDate = dates[dateIdx - 1]
+    setPreviousDate(previousDate)
+
+    setFranceReport(getReport(date, 'FRA'))
+    setPreviousFranceReport(getReport(previousDate, 'FRA'))
+    setRegionsReport(getReport(date, 'REG'))
+    setDepartementsReport(getReport(date, 'DEP'))
+  }, [date, dates, getReport])
 
   useEffect(() => {
     const {latitude, longitude} = viewport
@@ -129,28 +118,6 @@ const MainPage = ({data, dates, isGouv}) => {
 
     setIsIframe(Boolean(iframe === '1'))
   }, [router])
-
-  useEffect(() => {
-    const franceReport = getReport(date, 'FRA')
-    setFranceReport(franceReport)
-
-    const previousFranceReport = getReport(previousDate, 'FRA')
-    setPreviousFranceReport(previousFranceReport)
-
-    const regionsReport = getReport(date, 'REG')
-    setRegionsReport(regionsReport)
-
-    const previousRegionsReport = getReport(previousDate, 'REG')
-    setPreviousRegionsReport(previousRegionsReport)
-
-    const departementsReport = getReport(date, 'DEP')
-    setDepartementsReport(departementsReport)
-
-    const previousDepartementsReport = getReport(previousDate, 'DEP')
-    setPreviousDepartementsReport(previousDepartementsReport)
-
-    setMapReport(regionsReport)
-  }, [date, dates, dateIdx, getReport, previousDate])
 
   useEffect(() => {
     const mobileWidth = parseInt(theme.mobileDisplay.split('px')[0])
