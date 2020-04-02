@@ -6,32 +6,12 @@ export const casConfirmesLayer = {
   source: 'casConfirmes',
   filter: ['>', 'casConfirmes', 0],
   paint: {
-    'circle-opacity': 0.6,
+    'circle-opacity': 1,
     'circle-color': colors.orange,
     'circle-radius': [
       'interpolate',
       ['linear'],
       ['sqrt', ['number', ['get', 'casConfirmes']]],
-      0,
-      10,
-      100,
-      70
-    ]
-  }
-}
-
-export const decesLayer = {
-  id: 'deces',
-  type: 'circle',
-  source: 'deces',
-  filter: ['>', 'deces', 0],
-  paint: {
-    'circle-opacity': 0.6,
-    'circle-color': colors.red,
-    'circle-radius': [
-      'interpolate',
-      ['linear'],
-      ['sqrt', ['number', ['get', 'deces']]],
       0,
       10,
       100,
@@ -46,12 +26,12 @@ export const guerisLayer = {
   source: 'gueris',
   filter: ['>', 'gueris', 0],
   paint: {
-    'circle-opacity': 0.6,
+    'circle-opacity': 1,
     'circle-color': colors.green,
     'circle-radius': [
       'interpolate',
       ['linear'],
-      ['sqrt', ['number', ['get', 'gueris']]],
+      ['sqrt', ['+', ['number', ['get', 'gueris']], ['number', ['get', 'hospitalises']], ['number', ['get', 'deces']]]],
       0,
       10,
       100,
@@ -66,12 +46,12 @@ export const hospitalisesLayer = {
   source: 'hospitalises',
   filter: ['>', 'hospitalises', 0],
   paint: {
-    'circle-opacity': 0.6,
+    'circle-opacity': 1,
     'circle-color': colors.darkGrey,
     'circle-radius': [
       'interpolate',
       ['linear'],
-      ['sqrt', ['number', ['get', 'hospitalises']]],
+      ['sqrt', ['+', ['number', ['get', 'hospitalises']], ['number', ['get', 'deces']]]],
       0,
       10,
       100,
@@ -86,12 +66,32 @@ export const reanimationLayer = {
   source: 'reanimation',
   filter: ['>', 'reanimation', 0],
   paint: {
-    'circle-opacity': 0.6,
+    'circle-opacity': 1,
     'circle-color': colors.darkerGrey,
     'circle-radius': [
       'interpolate',
       ['linear'],
-      ['sqrt', ['number', ['get', 'reanimation']]],
+      ['sqrt', ['+', ['number', ['get', 'reanimation']], ['number', ['get', 'deces']]]],
+      0,
+      10,
+      100,
+      70
+    ]
+  }
+}
+
+export const decesLayer = {
+  id: 'deces',
+  type: 'circle',
+  source: 'deces',
+  filter: ['>', 'deces', 0],
+  paint: {
+    'circle-opacity': 1,
+    'circle-color': colors.red,
+    'circle-radius': [
+      'interpolate',
+      ['linear'],
+      ['sqrt', ['number', ['get', 'deces']]],
       0,
       10,
       100,

@@ -150,8 +150,8 @@ const Map = () => {
             data={getGeoJSONFromReport()}
           >
             <Layer {...casConfirmesLayer} />
-            <Layer {...hospitalisesLayer} />
             <Layer {...guerisLayer} />
+            <Layer {...hospitalisesLayer} />
             <Layer {...reanimationLayer} />
             <Layer {...decesLayer} />
           </Source>
