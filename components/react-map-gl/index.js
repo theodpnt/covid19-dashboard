@@ -16,7 +16,7 @@ const settings = {
 }
 
 const Map = () => {
-  const [selectedMapIdx, setSelectedMapIdx] = useState(2)
+  const [selectedMapIdx, setSelectedMapIdx] = useState(1)
 
   const {
     selectedLocationReport,
@@ -172,7 +172,6 @@ const Map = () => {
           background-color: #fff;
           width: 100%;
           margin: auto;
-          padding: 0.5em;
           transition: 0.5s;
         }
 
