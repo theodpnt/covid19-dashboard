@@ -7,37 +7,49 @@ import {AppContext} from '../pages'
 
 import Counters from './counters'
 import MixedChart from './charts/mixed-chart'
+import VariationsMixedChart from './charts/variations-mixed-chart'
 import ConfirmesChart from './charts/confirmes-chart'
+import VariationsConfirmesChart from './charts/variations-confirmes-chart'
 import DecesChart from './charts/deces-chart'
+import VariationsDecesChart from './charts/variations-deces-chart'
 import ReanimationChart from './charts/reanimation-chart'
+import VariationsReanimationChart from './charts/variations-reanimation-chart'
 import HospitalisesChart from './charts/hospitalises-chart'
+import VariationsHospitalisesChart from './charts/variations-hospitalises-chart'
 import GuerisChart from './charts/gueris-chart'
+import VariationsGuerisChart from './charts/variations-gueris-chart'
 import ButtonDiff from './button-diff'
 
 const charts = {
   mixed: {
     name: 'Tout afficher',
-    chart: MixedChart
+    chart: MixedChart,
+    variations: VariationsMixedChart
   },
   confirmed: {
     name: 'Cas confirmés',
-    chart: ConfirmesChart
+    chart: ConfirmesChart,
+    variations: VariationsConfirmesChart
   },
   hospitalises: {
     name: 'Hospitalisations',
-    chart: HospitalisesChart
+    chart: HospitalisesChart,
+    variations: VariationsHospitalisesChart
   },
   reanimation: {
     name: 'Réanimations',
-    chart: ReanimationChart
+    chart: ReanimationChart,
+    variations: VariationsReanimationChart
   },
   deces: {
     name: 'Décès à l’hôpital',
-    chart: DecesChart
+    chart: DecesChart,
+    variations: VariationsDecesChart
   },
   gueris: {
     name: 'Retours à domicile',
-    chart: GuerisChart
+    chart: GuerisChart,
+    variations: VariationsGuerisChart
   }
 }
 
@@ -49,7 +61,7 @@ const Statistics = () => {
 
   const [selectedChart, setSelectedChart] = useState('mixed')
   const [isVariation, setIsVariation] = useState(false)
-  const Chart = charts[selectedChart].chart
+  const Chart = isVariation ? charts[selectedChart].variations : charts[selectedChart].chart
 
   const handleVariation = () => {
     setIsVariation(!isVariation)
@@ -170,10 +182,6 @@ const Statistics = () => {
           border-bottom: 1px solid ${colors.darkBlue};
           border-right: 1px solid ${colors.darkBlue};
           margin: .3em;
-        }
-
-        .button-container.selected {
-          background-color: red;
         }
         `}</style>
     </>
