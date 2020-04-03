@@ -48,7 +48,7 @@ const Statistics = () => {
   const previousReport = selectedPreviousLocationReport || previousFranceReport
 
   const [selectedChart, setSelectedChart] = useState('mixed')
-  const [isVariation, setIsVariation] = useState('false')
+  const [isVariation, setIsVariation] = useState(false)
   const Chart = charts[selectedChart].chart
 
   const handleVariation = () => {

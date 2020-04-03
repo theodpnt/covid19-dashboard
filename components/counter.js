@@ -13,7 +13,7 @@ const Counter = ({value, label, color, previousValue, details, isVariation}) => 
       <div className='counter'>
         {isVariation ? (
           <div className='value'>
-            {typeof value === 'number' ? value : '-'}
+            {typeof difference === 'number' ? difference : '-'}
             <div className='hover'>
               <Info size={12} data-tip={details} data-for='overridePosition' />
               <ReactTooltip
@@ -35,7 +35,7 @@ const Counter = ({value, label, color, previousValue, details, isVariation}) => 
           </div>
         ) : (
           <div className='value'>
-            {typeof difference === 'number' ? difference : '-'}
+            {typeof value === 'number' ? value : '-'}
             <div className='hover'>
               <Info size={12} data-tip={details} data-for='overridePosition' />
               <ReactTooltip
@@ -56,7 +56,7 @@ const Counter = ({value, label, color, previousValue, details, isVariation}) => 
             </div>
           </div>
         )}
-        {difference && isVariation && (
+        {difference && !isVariation && (
           <div className='difference'>
             ( {Math.sign(difference) === 1 ? '+' : ''}{difference} )
           </div>

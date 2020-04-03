@@ -7,7 +7,7 @@ const ButtonDiff = ({isVariation, onClick}) => {
   return (
     <>
       <div className='button-container'>
-        <button className='chart-name' type='button' onClick={onClick} >{isVariation ? 'Afficher Variations' : 'Afficher Données cumulées'}</button>
+        <button className='chart-name' type='button' onClick={onClick} >{isVariation ? 'Afficher Données cumulées' : 'Afficher Variations'}</button>
       </div>
       <style jsx>{`
         .chart-name {
