@@ -12,6 +12,7 @@ import DecesChart from './charts/deces-chart'
 import ReanimationChart from './charts/reanimation-chart'
 import HospitalisesChart from './charts/hospitalises-chart'
 import GuerisChart from './charts/gueris-chart'
+import ButtonDiff from './button-diff'
 
 const charts = {
   mixed: {
@@ -47,7 +48,12 @@ const Statistics = () => {
   const previousReport = selectedPreviousLocationReport || previousFranceReport
 
   const [selectedChart, setSelectedChart] = useState('mixed')
+  const [isVariation, setIsVariation] = useState('false')
   const Chart = charts[selectedChart].chart
+
+  const handleVariation = () => {
+    setIsVariation(!isVariation)
+  }
 
   return (
     <>
@@ -62,7 +68,9 @@ const Statistics = () => {
         <h2>COVID-19 en {selectedLocationReport ? selectedLocationReport.nom : 'France'}</h2>
       </div>
 
-      <Counters report={report} previousReport={previousReport} />
+      <Counters report={report} previousReport={previousReport} isVariation={isVariation} />
+
+      <ButtonDiff onClick={handleVariation} isVariation={isVariation} />
 
       {report && report.history && (
         <div className='chart-container'>

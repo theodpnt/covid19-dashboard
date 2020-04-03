@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Counter from './counter'
-import colors from '../styles/colors'
 
-const Counters = ({report, previousReport}) => {
+const Counters = ({report, previousReport, isVariation}) => {
   const {casConfirmes, hospitalises, reanimation, deces, gueris} = report || {}
   const details = {
     casConfirmes: 'Nombre cumulé de cas de COVID-19 confirmés par un test positif. <br />Un nouvel indicateur sera bientôt proposé.',
@@ -17,12 +16,12 @@ const Counters = ({report, previousReport}) => {
   return (
     <div className='stats'>
       <div className='counters'>
-        <Counter value={gueris} previousValue={previousReport.gueris} label='retours à domicile' details={details.gueris} color='green' />
-        <Counter value={deces} previousValue={previousReport.deces} label='décès à l’hôpital' details={details.deces} color='red' />
-        <Counter value={hospitalises} previousValue={previousReport.hospitalises} label='hospitalisations' details={details.hospitalises} color='darkGrey' />
-        <Counter value={reanimation} previousValue={previousReport.reanimation} label='en réanimation' details={details.reanimation} color='darkerGrey' />
+        <Counter isVariation={isVariation} value={gueris} previousValue={previousReport.gueris} label='retours à domicile' details={details.gueris} color='green' />
+        <Counter isVariation={isVariation} value={deces} previousValue={previousReport.deces} label='décès à l’hôpital' details={details.deces} color='red' />
+        <Counter isVariation={isVariation} value={hospitalises} previousValue={previousReport.hospitalises} label='hospitalisations' details={details.hospitalises} color='darkGrey' />
+        <Counter isVariation={isVariation} value={reanimation} previousValue={previousReport.reanimation} label='en réanimation' details={details.reanimation} color='darkerGrey' />
       </div>
-      <Counter value={casConfirmes} previousValue={previousReport.casConfirmes} label='cas confirmés' details={details.casConfirmes} color='orange' />
+      <Counter isVariation={isVariation} value={casConfirmes} previousValue={previousReport.casConfirmes} label='cas confirmés' details={details.casConfirmes} color='orange' />
       <style jsx>{`
         .counters {
           display: grid;
@@ -35,12 +34,14 @@ const Counters = ({report, previousReport}) => {
 
 Counters.defaultProps = {
   report: {},
-  previousReport: {}
+  previousReport: {},
+  isVariation: false
 }
 
 Counters.propTypes = {
   report: PropTypes.object,
-  previousReport: PropTypes.object
+  previousReport: PropTypes.object,
+  isVariation: PropTypes.bool
 }
 
 export default Counters

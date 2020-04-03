@@ -5,34 +5,58 @@ import {Info} from 'react-feather'
 import ReactTooltip from 'react-tooltip'
 import colors from '../styles/colors'
 
-const Counter = ({value, label, color, previousValue, details}) => {
+const Counter = ({value, label, color, previousValue, details, isVariation}) => {
   const difference = (Number.isInteger(value) && Number.isInteger(previousValue) && value - previousValue !== 0) ? value - previousValue : null
 
   return (
     <div className='counter-container'>
       <div className='counter'>
-        <div className='value'>
-          {typeof value === 'number' ? value : '-'}
-          <div className='hover'>
-            <Info size={12} data-tip={details} data-for='overridePosition' />
-            <ReactTooltip
-              id='overridePosition'
-              className='extra-class'
-              backgroundColor='rgba(0, 0, 0, .3)'
-              arrowColor='rgba(0, 0, 0, 0)'
-              multiline
-              overridePosition={(
-                {left, top}, currentEvent, currentTarget, node) => {
-                const d = document.documentElement
-                left = Math.min(d.clientWidth - node.clientWidth, left)
-                top = Math.min(d.clientHeight - node.clientHeight, top)
-                left = Math.max(0, left)
-                top = Math.max(0, top)
-                return {top, left}
-              }} />
+        {isVariation ? (
+          <div className='value'>
+            {typeof value === 'number' ? value : '-'}
+            <div className='hover'>
+              <Info size={12} data-tip={details} data-for='overridePosition' />
+              <ReactTooltip
+                id='overridePosition'
+                className='extra-class'
+                backgroundColor='rgba(0, 0, 0, .3)'
+                arrowColor='rgba(0, 0, 0, 0)'
+                multiline
+                overridePosition={(
+                  {left, top}, currentEvent, currentTarget, node) => {
+                  const d = document.documentElement
+                  left = Math.min(d.clientWidth - node.clientWidth, left)
+                  top = Math.min(d.clientHeight - node.clientHeight, top)
+                  left = Math.max(0, left)
+                  top = Math.max(0, top)
+                  return {top, left}
+                }} />
+            </div>
           </div>
-        </div>
-        {difference && (
+        ) : (
+          <div className='value'>
+            {typeof difference === 'number' ? difference : '-'}
+            <div className='hover'>
+              <Info size={12} data-tip={details} data-for='overridePosition' />
+              <ReactTooltip
+                id='overridePosition'
+                className='extra-class'
+                backgroundColor='rgba(0, 0, 0, .3)'
+                arrowColor='rgba(0, 0, 0, 0)'
+                multiline
+                overridePosition={(
+                  {left, top}, currentEvent, currentTarget, node) => {
+                  const d = document.documentElement
+                  left = Math.min(d.clientWidth - node.clientWidth, left)
+                  top = Math.min(d.clientHeight - node.clientHeight, top)
+                  left = Math.max(0, left)
+                  top = Math.max(0, top)
+                  return {top, left}
+                }} />
+            </div>
+          </div>
+        )}
+        {difference && isVariation && (
           <div className='difference'>
             ( {Math.sign(difference) === 1 ? '+' : ''}{difference} )
           </div>
@@ -85,7 +109,8 @@ Counter.defaultProps = {
   label: null,
   color: 'almostBlack',
   previousValue: null,
-  details: null
+  details: null,
+  isVariation: false
 }
 
 Counter.propTypes = {
@@ -93,7 +118,8 @@ Counter.propTypes = {
   label: PropTypes.string,
   color: PropTypes.string,
   previousValue: PropTypes.number,
-  details: PropTypes.string
+  details: PropTypes.string,
+  isVariation: PropTypes.bool
 }
 
 export default Counter
