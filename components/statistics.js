@@ -8,11 +8,7 @@ import {AppContext} from '../pages'
 
 import Counters from './counters'
 import MixedChart from './charts/mixed-chart'
-import ConfirmesChart from './charts/confirmes-chart'
-import DecesChart from './charts/deces-chart'
-import ReanimationChart from './charts/reanimation-chart'
-import HospitalisesChart from './charts/hospitalises-chart'
-import GuerisChart from './charts/gueris-chart'
+import IndicateurCumulChart from './charts/indicateur-cumul'
 
 const charts = {
   mixed: {
@@ -21,23 +17,48 @@ const charts = {
   },
   confirmed: {
     name: 'Cas confirmés',
-    chart: ConfirmesChart
+    chart: IndicateurCumulChart,
+    options: {
+      label: 'Cas confirmés',
+      metricName: 'casConfirmes',
+      color: 'orange'
+    }
   },
   hospitalises: {
     name: 'Hospitalisations',
-    chart: HospitalisesChart
+    chart: IndicateurCumulChart,
+    options: {
+      label: 'Hospitalisés',
+      metricName: 'hospitalises',
+      color: 'darkGrey'
+    }
   },
   reanimation: {
     name: 'Réanimations',
-    chart: ReanimationChart
+    chart: IndicateurCumulChart,
+    options: {
+      label: 'Réanimations',
+      metricName: 'reanimation',
+      color: 'darkerGrey'
+    }
   },
   deces: {
     name: 'Décès à l’hôpital',
-    chart: DecesChart
+    chart: IndicateurCumulChart,
+    options: {
+      label: 'Décès à l’hôpital',
+      metricName: 'deces',
+      color: 'red'
+    }
   },
   gueris: {
     name: 'Retours à domicile',
-    chart: GuerisChart
+    chart: IndicateurCumulChart,
+    options: {
+      label: 'Retours à domicile',
+      metricName: 'gueris',
+      color: 'green'
+    }
   }
 }
 
@@ -49,6 +70,7 @@ const Statistics = () => {
 
   const [selectedChart, setSelectedChart] = useState('mixed')
   const Chart = charts[selectedChart].chart
+  const chartOptions = charts[selectedChart].options || {}
 
   return (
     <>
@@ -67,7 +89,7 @@ const Statistics = () => {
 
       {report && report.history && (
         <div className='chart-container'>
-          <Chart data={report.history.filter(r => date >= r.date)} />
+          <Chart reports={report.history.filter(r => date >= r.date)} {...chartOptions} />
           <div className='charts-list'>
             {Object.keys(charts).map(chart => (
               <div key={chart} className='button-container'>
