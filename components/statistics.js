@@ -9,6 +9,7 @@ import {AppContext} from '../pages'
 import Counters from './counters'
 import MixedChart from './charts/mixed-chart'
 import IndicateurCumulChart from './charts/indicateur-cumul'
+import IndicateurVariationChart from './charts/indicateur-variation'
 
 const charts = {
   mixed: {
@@ -17,7 +18,7 @@ const charts = {
   },
   confirmed: {
     name: 'Cas confirmés',
-    chart: IndicateurCumulChart,
+    type: 'indicateur',
     options: {
       label: 'Cas confirmés',
       metricName: 'casConfirmes',
@@ -26,7 +27,7 @@ const charts = {
   },
   hospitalises: {
     name: 'Hospitalisations',
-    chart: IndicateurCumulChart,
+    type: 'indicateur',
     options: {
       label: 'Hospitalisés',
       metricName: 'hospitalises',
@@ -35,7 +36,7 @@ const charts = {
   },
   reanimation: {
     name: 'Réanimations',
-    chart: IndicateurCumulChart,
+    type: 'indicateur',
     options: {
       label: 'Réanimations',
       metricName: 'reanimation',
@@ -44,7 +45,7 @@ const charts = {
   },
   deces: {
     name: 'Décès à l’hôpital',
-    chart: IndicateurCumulChart,
+    type: 'indicateur',
     options: {
       label: 'Décès à l’hôpital',
       metricName: 'deces',
@@ -53,12 +54,22 @@ const charts = {
   },
   gueris: {
     name: 'Retours à domicile',
-    chart: IndicateurCumulChart,
+    type: 'indicateur',
     options: {
       label: 'Retours à domicile',
       metricName: 'gueris',
       color: 'green'
     }
+  }
+}
+
+function getChart(chartName, showVariations) {
+  if (charts[chartName].chart) {
+    return charts[chartName].chart
+  }
+
+  if (charts[chartName].type === 'indicateur') {
+    return showVariations ? IndicateurVariationChart : IndicateurCumulChart
   }
 }
 
@@ -69,7 +80,11 @@ const Statistics = () => {
   const previousReport = selectedPreviousLocationReport || previousFranceReport
 
   const [selectedChart, setSelectedChart] = useState('mixed')
-  const Chart = charts[selectedChart].chart
+  const [showVariations, setShowVariations] = useState(false)
+
+  const toggleable = charts[selectedChart].type === 'indicateur'
+
+  const Chart = getChart(selectedChart, showVariations)
   const chartOptions = charts[selectedChart].options || {}
 
   return (
@@ -88,21 +103,26 @@ const Statistics = () => {
       <Counters report={report} previousReport={previousReport} />
 
       {report && report.history && (
-        <div className='chart-container'>
-          <Chart reports={report.history.filter(r => date >= r.date)} {...chartOptions} />
-          <div className='charts-list'>
-            {Object.keys(charts).map(chart => (
-              <div key={chart} className='button-container'>
-                <div
-                  className={`chart-name ${chart === selectedChart ? 'selected' : ''}`}
-                  onClick={() => setSelectedChart(chart)}
-                >
-                  {charts[chart].name}
+        <>
+          {toggleable && <a className='toggle' onClick={() => setShowVariations(!showVariations)}>{showVariations ? 'Afficher le graphique cumulé' : 'Afficher les variations quotidiennes'}</a>}
+
+          <div className='chart-container'>
+            <Chart reports={report.history.filter(r => date >= r.date)} {...chartOptions} />
+
+            <div className='charts-list'>
+              {Object.keys(charts).map(chart => (
+                <div key={chart} className='button-container'>
+                  <div
+                    className={`chart-name ${chart === selectedChart ? 'selected' : ''}`}
+                    onClick={() => setSelectedChart(chart)}
+                  >
+                    {charts[chart].name}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       <style jsx>{`
@@ -189,6 +209,13 @@ const Statistics = () => {
 
         .button-container.selected {
           background-color: red;
+        }
+
+        .toggle {
+          padding: 2px 20px;
+          text-align: right;
+          font-size: 0.8em;
+          cursor: pointer;
         }
         `}</style>
     </>
