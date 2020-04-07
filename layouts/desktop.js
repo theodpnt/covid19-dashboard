@@ -12,9 +12,12 @@ import theme from '../styles/theme'
 import colors from '../styles/colors'
 
 import DateNav from '../components/date-nav'
-import LayoutSelector from '../components/layout-selector'
+import Scrollable from '../components/scrollable'
+import ReactMapGl from '../components/react-map-gl'
+import Statistics from '../components/statistics'
+import Informations from '../components/informations'
 
-const HEADER_HEIGHT = '50px'
+import colors from '../styles/colors'
 
 const DesktopPage = () => {
   const {selectedLocation, selectedMapIdx, setSelectedMapIdx} = useContext(AppContext)
@@ -108,14 +111,19 @@ const DesktopPage = () => {
   const themeContext = useContext(ThemeContext)
 
   return (
-    <div className='desktop-container'>
-      <div className='desktop-header'>
+    <>
+      <div className='menu'>
         <DateNav />
-        <LayoutSelector />
+        <Scrollable>
+          <>
+            <Statistics />
+            <Informations />
+          </>
+        </Scrollable>
       </div>
 
-      <div className='desktop-content'>
-        {selectedLayout.component}
+      <div className='map'>
+        <ReactMapGl />
       </div>
 
       <style jsx>{`
@@ -167,7 +175,7 @@ const DesktopPage = () => {
           height: calc(100% - ${HEADER_HEIGHT});
         }
     `}</style>
-    </div>
+    </>
   )
 }
 
