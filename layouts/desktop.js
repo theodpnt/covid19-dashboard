@@ -102,9 +102,11 @@ const DesktopPage = () => {
 
   const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
 
+const DesktopPage = () => {
+  const {selectedMapIdx, setSelectedMapIdx} = useContext(AppContext)
   return (
-    <div className='desktop-container'>
-      <div className='desktop-header'>
+    <>
+      <div className='menu'>
         <DateNav />
         <LayoutSelector
           selected={selectedLayout}
@@ -118,11 +120,39 @@ const DesktopPage = () => {
       </div>
 
       <style jsx>{`
-        .desktop-container {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
+      .menu {
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        max-width: ${theme.menuWidth};
+        box-shadow: 0 1px 4px ${colors.lightGrey};
+      }
+
+      .map {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .metropole {
+        flex: 1;
+      }
+
+      .drom-container {
+        display: flex;
+        padding: 0.5em;
+        height: 25%;
+      }
+
+      .map-selector {
+        z-index: 1;
+        position: absolute;
+        background-color: #000000aa;
+        color: #fff;
+        border-radius: 4px;
+        margin: 0.5em;
+      }
 
         .desktop-header {
           z-index: 10;
@@ -133,8 +163,9 @@ const DesktopPage = () => {
         .desktop-content {
           display: flex;
         }
+      }
     `}</style>
-    </div>
+    </>
   )
 }
 
