@@ -53,7 +53,6 @@ const LAYOUTS = {
 
 const DesktopPage = () => {
   const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
-  console.log("DesktopPage -> selectedLayout", selectedLayout)
 
   return (
     <div className='desktop-container'>

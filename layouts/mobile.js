@@ -10,6 +10,7 @@ import Scrollable from '../components/scrollable'
 import ReactMapGl from '../components/react-map-gl'
 import Statistics from '../components/statistics'
 import Informations from '../components/informations'
+import LayoutSelector from '../components/layout-selector'
 
 const VIEWS = {
   map: () => <ReactMapGl />,
@@ -19,6 +20,20 @@ const VIEWS = {
 
 const MobilePage = () => {
   const [selectedView, setSelectedView] = useState('stats')
+
+  const LAYOUTS = {
+    'Vue d’ensemble': () => VIEWS[selectedView](),
+    'Suivi des hospitalisations': () => (
+      <h1>Suivi des hospitalisations</h1>
+    ),
+    'Suivi des tests': () => (
+      <h1>
+        Suivi des tests
+      </h1>
+    )
+  }
+  const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
+  console.log("MobilePage -> selectedLayout", selectedLayout)
 
   const app = useContext(AppContext)
   const theme = useContext(ThemeContext)
@@ -31,8 +46,13 @@ const MobilePage = () => {
   return (
     <div className='mobile-page-container'>
       <DateNav disabled={selectedView === 'informations'} />
+      <LayoutSelector
+        selected={selectedLayout}
+        layouts={Object.keys(LAYOUTS)}
+        selectLayout={setSelectedLayout}
+      />
       <Scrollable>
-        {VIEWS[selectedView]()}
+        {LAYOUTS[selectedLayout]()}
       </Scrollable>
 
       <div className='view-selector'>
