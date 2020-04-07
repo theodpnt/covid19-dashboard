@@ -1,4 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+
+import {ThemeContext} from '../pages'
 
 import DateNav from '../components/date-nav'
 import Scrollable from '../components/scrollable'
@@ -8,6 +10,8 @@ import Informations from '../components/informations'
 
 import colors from '../styles/colors'
 import LayoutSelector from '../components/layout-selector'
+
+const HEADER_HEIGHT = '50px'
 
 const LAYOUTS = {
   'Vue d’ensemble': () => (
@@ -52,6 +56,8 @@ const LAYOUTS = {
 }
 
 const DesktopPage = () => {
+  const theme = useContext(ThemeContext)
+
   const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
 
   return (
@@ -79,11 +85,15 @@ const DesktopPage = () => {
         .desktop-header {
           z-index: 10;
           display: flex;
-          flex-direction: column;
+          background-color: ${theme.primary};
           box-shadow: 0 1px 4px ${colors.lightGrey};
+          width: 100%;
+          height: ${HEADER_HEIGHT};
         }
+
         .desktop-content {
           display: flex;
+          height: calc(100% - ${HEADER_HEIGHT});
         }
     `}</style>
     </div>

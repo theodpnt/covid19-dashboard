@@ -33,7 +33,6 @@ const MobilePage = () => {
     )
   }
   const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
-  console.log("MobilePage -> selectedLayout", selectedLayout)
 
   const app = useContext(AppContext)
   const theme = useContext(ThemeContext)

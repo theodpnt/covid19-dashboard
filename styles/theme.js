@@ -1,7 +1,7 @@
 import colors from './colors'
 
 export default ({
-  mobileDisplay: '720px',
+  mobileDisplay: '800px',
 
   default: {
     primary: colors.darkerGrey,
