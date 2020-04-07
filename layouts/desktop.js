@@ -8,7 +8,7 @@ import Informations from '../components/informations'
 
 import colors from '../styles/colors'
 
-const ScreenPage = () => {
+const DesktopPage = () => {
   return (
     <>
       <div className='menu'>
@@ -43,4 +43,4 @@ const ScreenPage = () => {
   )
 }
 
-export default ScreenPage
+export default DesktopPage

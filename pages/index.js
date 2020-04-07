@@ -21,7 +21,7 @@ import {
   guerisCountLayer
 } from '../components/react-map-gl/layers'
 
-import ScreenPage from '../layouts/screen'
+import DesktopPage from '../layouts/desktop'
 import MobilePage from '../layouts/mobile'
 
 export const AppContext = React.createContext()
@@ -285,7 +285,7 @@ const MainPage = ({data, dates}) => {
             {isMobileDevice ? (
               <MobilePage />
             ) : (
-              <ScreenPage />
+              <DesktopPage />
             )}
           </ThemeContext.Provider>
         </AppContext.Provider>
