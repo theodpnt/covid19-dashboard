@@ -104,9 +104,94 @@ const DesktopPage = () => {
 
 const DesktopPage = () => {
   const {selectedMapIdx, setSelectedMapIdx} = useContext(AppContext)
+  const LAYOUTS = {
+    'Vue d’ensemble': () => (
+      <>
+        <div className='menu'>
+          <Scrollable>
+            <>
+              <Statistics />
+              <Informations />
+            </>
+          </Scrollable>
+        </div>
+
+        <div className='map'>
+          <div className='metropole'>
+            <div className='map-selector'>
+              <MapSelector mapIdx={selectedMapIdx} selectMap={setSelectedMapIdx} />
+            </div>
+            <ReactMapGl />
+          </div>
+          <div className='drom-container'>
+            <Drom />
+          </div>
+        </div>
+
+        <style jsx>{`
+        .menu {
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          max-width: ${theme.menuWidth};
+          box-shadow: 0 1px 4px ${colors.lightGrey};
+        }
+
+        .map {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          height: 100%;
+        }
+
+        .metropole {
+          flex: 1;
+        }
+
+        .drom-container {
+          display: flex;
+          padding: 0.5em;
+          height: 25%;
+        }
+
+        .map-selector {
+          z-index: 1;
+          position: absolute;
+          background-color: #000000aa;
+          color: #fff;
+          border-radius: 4px;
+          margin: 0.5em;
+        }
+
+        @media (max-width: 1000px) {
+          .drom-container {
+            height: 40%;
+          }
+        }
+
+        @media (max-width: 800px) {
+          .drom-container {
+            height: 50%;
+          }
+        }
+    `}</style>
+      </>
+    ),
+    'Suivi des hospitalisations': () => (
+      <h1>Suivi des hospitalisations</h1>
+    ),
+    'Suivi des tests': () => (
+      <h1>
+        Suivi des tests
+      </h1>
+    )
+  }
+
+  const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
+
   return (
-    <>
-      <div className='menu'>
+    <div className='desktop-container'>
+      <div className='desktop-header'>
         <DateNav />
         <LayoutSelector
           selected={selectedLayout}
@@ -163,9 +248,8 @@ const DesktopPage = () => {
         .desktop-content {
           display: flex;
         }
-      }
     `}</style>
-    </>
+    </div>
   )
 }
 
