@@ -18,6 +18,8 @@ import Statistics from '../components/statistics'
 import Informations from '../components/informations'
 
 import colors from '../styles/colors'
+
+import DateNav from '../components/date-nav'
 import LayoutSelector from '../components/layout-selector'
 
 const DesktopPage = () => {
@@ -188,23 +190,18 @@ const DesktopPage = () => {
 }
 
 const DesktopPage = () => {
+  const {selectedLayout} = useContext(AppContext)
   const theme = useContext(ThemeContext)
-
-  const [selectedLayout, setSelectedLayout] = useState(Object.keys(LAYOUTS)[0])
 
   return (
     <div className='desktop-container'>
       <div className='desktop-header'>
         <DateNav />
-        <LayoutSelector
-          selected={selectedLayout}
-          layouts={Object.keys(LAYOUTS)}
-          selectLayout={setSelectedLayout}
-        />
+        <LayoutSelector />
       </div>
 
       <div className='desktop-content'>
-        {LAYOUTS[selectedLayout]()}
+        {selectedLayout.component}
       </div>
 
       <style jsx>{`
