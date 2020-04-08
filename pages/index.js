@@ -24,6 +24,8 @@ import {
 import DesktopPage from '../layouts/desktop'
 import MobilePage from '../layouts/mobile'
 
+import BigPicture from '../components/layouts/big-picture'
+
 export const AppContext = React.createContext()
 export const ThemeContext = React.createContext('theme.default')
 
@@ -57,6 +59,24 @@ const defaultViewport = {
   zoom: 5
 }
 
+const LAYOUTS = [
+  {
+    id: 'big-picture',
+    label: 'Vue d’ensemble',
+    component: <BigPicture />
+  },
+  {
+    id: 'hospitalisations',
+    label: 'Suivi des hospitalisations',
+    component: <h1>Suivi des hospitalisations</h1>
+  },
+  {
+    id: 'test',
+    label: 'Suivi des tests',
+    component: <h1>Suivi des tests</h1>
+  }
+]
+
 const MainPage = ({data, dates}) => {
   const router = useRouter()
 
@@ -74,6 +94,7 @@ const MainPage = ({data, dates}) => {
   const [departementsReport, setDepartementsReport] = useState({})
   const [previousDepartementsReport, setPreviousDepartementsReport] = useState({})
   const [viewport, setViewport] = useState(defaultViewport)
+  const [selectedLayout, setSelectedLayout] = useState(LAYOUTS[0])
 
   const dateIdx = indexOf(dates, date)
   const previousDate = dates[dateIdx - 1]
@@ -278,7 +299,10 @@ const MainPage = ({data, dates}) => {
           viewport,
           isIframe,
           isMobileDevice,
-          isTouchScreenDevice
+          isTouchScreenDevice,
+          selectedLayout,
+          setSelectedLayout,
+          layouts: LAYOUTS
         }}
         >
           <ThemeContext.Provider value={theme.gouv}>
