@@ -8,9 +8,10 @@ import {AppContext, ThemeContext} from '../../pages'
 import Scrollable from '../scrollable'
 import ReactMapGl from '../react-map-gl'
 import Informations from '../informations'
+import Tests from '../tests'
 
 const VIEWS = {
-  tests: <h1 style={{padding: '1em'}} >Tests</h1>,
+  tests: <Tests />,
   map: <ReactMapGl />,
   informations: <Informations />
 }
@@ -75,7 +76,8 @@ const DesktopTabTests = () => {
       <div className='menu'>
         <Scrollable>
           <>
-            <h1>Tests</h1>
+            <Tests />
+            <Informations />
           </>
         </Scrollable>
       </div>
@@ -85,11 +87,6 @@ const DesktopTabTests = () => {
       </div>
 
       <style jsx>{`
-        h1 {
-          width: 450px;
-          padding: 1em;
-        }
-
         .menu {
           z-index: 1;
           display: flex;
