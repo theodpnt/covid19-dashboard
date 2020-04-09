@@ -25,6 +25,8 @@ import DesktopPage from '../layouts/desktop'
 import MobilePage from '../layouts/mobile'
 
 import BigPicture from '../components/layouts/big-picture'
+import TabTests from '../components/layouts/tab-tests'
+import TabHospitalisations from '../components/layouts/tab-hospitalisations'
 
 export const AppContext = React.createContext()
 export const ThemeContext = React.createContext('theme.default')
@@ -68,12 +70,12 @@ const LAYOUTS = [
   {
     id: 'hospitalisations',
     label: 'Suivi des hospitalisations',
-    component: <h1>Suivi des hospitalisations</h1>
+    component: <TabHospitalisations />
   },
   {
     id: 'test',
     label: 'Suivi des tests',
-    component: <h1>Suivi des tests</h1>
+    component: <TabTests />
   }
 ]
 
