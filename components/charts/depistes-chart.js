@@ -39,7 +39,7 @@ const formatData = data => {
 
   if (data.some(h => h.depistes)) {
     datasets.push({
-      label: 'Hospitalisés',
+      label: 'Tests',
       data: data.map(h => h.depistes),
       backgroundColor: colors.darkGrey
     })
