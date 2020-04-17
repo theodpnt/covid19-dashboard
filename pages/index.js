@@ -26,7 +26,7 @@ const LAYOUTS = [
   },
   {
     id: 'transfert',
-    label: 'Transfert de patients',
+    label: 'Transferts de patients',
     component: <Transfert />
   }
 ]
