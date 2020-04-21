@@ -128,7 +128,7 @@ function filterRecords(records) {
 async function main() {
   const records = await loadJson(DATA_SOURCE)
   const csvRecords = await fetchCsv([DATA_GENRE, DATA_AGE, DATA_COVID_DAY])
-  const hospitalisation = union(dataGenre(csvRecords), dataAge(csvRecords))
+  const hospitalisations = union(dataGenre(csvRecords), dataAge(csvRecords))
   const covidTests = dataCovidDay(csvRecords)
   const data = consolidate(filterRecords(records))
   await outputJson(join(__dirname, 'chiffres-cles.json'), data, {spaces: 2})
