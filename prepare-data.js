@@ -89,7 +89,7 @@ function dataCovidWeek(data) {
   return flattenDeep(data).filter(r => 'clage_covid' in r && 'week' in r).map(r => {
     return {
       code: `DEP-${r.dep}`,
-      date: r.jour,
+      semaine: r.week,
       trancheAge: r.clage_covid,
       nbTest: Number.parseInt(r.nb_test, 10),
       nbPositif: Number.parseInt(r.nb_pos, 10),
