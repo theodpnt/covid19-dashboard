@@ -11,7 +11,6 @@ const DATA_SOURCE = process.env.DATA_SOURCE || 'https://raw.githubusercontent.co
 const DATA_GENRE = 'https://www.data.gouv.fr/fr/datasets/r/63352e38-d353-4b54-bfd1-f1b3ee1cabd7'
 const DATA_AGE = 'https://www.data.gouv.fr/fr/datasets/r/08c18e08-6780-452d-9b8c-ae244ad529b3'
 const DATA_COVID_DAY = 'https://www.data.gouv.fr/fr/datasets/r/b4ea7b4b-b7d1-4885-a099-71852291ff20'
-const DATA_COVID_WEEK = 'https://www.data.gouv.fr/fr/datasets/r/72050bc8-9959-4bb1-88a0-684ff8db5fb5'
 
 async function fetchJson(url) {
   const response = await got(url, {responseType: 'json'})
@@ -85,24 +84,6 @@ function dataCovidDay(data) {
   })
 }
 
-function dataCovidWeek(data) {
-  return flattenDeep(data).filter(r => 'clage_covid' in r && 'week' in r).map(r => {
-    return {
-      code: `DEP-${r.dep}`,
-      semaine: r.week,
-      trancheAge: r.clage_covid,
-      nbTest: Number.parseInt(r.nb_test, 10),
-      nbPositif: Number.parseInt(r.nb_pos, 10),
-      nbTestHomme: Number.parseInt(r.nb_test_h, 10),
-      nbPositifHomme: Number.parseInt(r.nb_pos_h, 10),
-      nbTestFemme: Number.parseInt(r.nb_test_f, 10),
-      nbPositifFemme: Number.parseInt(r.nb_pos_f, 10),
-      source: {nom: 'Santé publique France Data'},
-      sourceType: 'sante-publique-france-data'
-    }
-  })
-}
-
 const SOURCE_PRIORITIES = {
   'ministere-sante': 1,
   'sante-publique-france': 2,
@@ -146,9 +127,9 @@ function filterRecords(records) {
 
 async function main() {
   const records = await loadJson(DATA_SOURCE)
-  const csvRecords = await fetchCsv([DATA_GENRE, DATA_AGE, DATA_COVID_DAY, DATA_COVID_WEEK])
+  const csvRecords = await fetchCsv([DATA_GENRE, DATA_AGE, DATA_COVID_DAY])
   const hospitalisation = union(dataGenre(csvRecords), dataAge(csvRecords))
-  const covidTests = union(dataCovidDay(csvRecords), dataCovidWeek(csvRecords))
+  const covidTests = dataCovidDay(csvRecords)
   const data = consolidate(filterRecords(records))
   await outputJson(join(__dirname, 'chiffres-cles.json'), data, {spaces: 2})
 }
